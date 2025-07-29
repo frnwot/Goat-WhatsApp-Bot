@@ -188,7 +188,7 @@ Let’s build better tools — together.
 
 ---
 
-## 🙌 Authors
+## all credits goes to
 
 * 👨‍💻 Lead Author: [Tas33n](https://github.com/tas33n)
 * 🛡 Co-Author: [Anbuinfosec](https://github.com/Anbuinfosec)
@@ -203,23 +203,6 @@ Let’s build better tools — together.
 
 ---
 
-## 💰 Support & Donations
-
-If you find this project helpful and want to support further development, donations are appreciated 🙏
-
-### 🏦 Binance Pay
-Binance ID: **471390205**
-
-### 💵 USDT (TRC-20)
-`TR95UPDfsB1Ammyj4w62xDuAJEA8wH5GSz`
-
-### 💸 Litecoin (LTC)
-`LeaKUHCiAhRa6U3jrQa4bCAvaAfniJ6pXP`
-
-### 💸 Bitcoin (BTC)
-`16NyoNtkDk8uHejqNsKkhpc8RyPEEfu1m9`
-
----
 
 ## 📜 License
 
