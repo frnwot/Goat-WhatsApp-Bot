@@ -1,0 +1,64 @@
+name: Deploy Goat WhatsApp Bot
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: |
+          npm install
+
+      - name: Install Ngrok
+        run: |
+          npm install -g ngrok
+
+      - name: Setup Ngrok Tunnel
+        env:
+          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+        run: |
+          ngrok config add-authtoken "$NGROK_AUTH_TOKEN"
+          nohup ngrok http 3000 > ngrok.log &
+          sleep 10
+          curl -s http://localhost:4040/api/tunnels > tunnels.json
+          cat tunnels.json
+
+      - name: Start Goat Bot
+        run: |
+          node index.js &
+          node dashboard/server.js &
+          sleep 300 # run for 5 minutes, extend as needed
+
+      - name: Upload Auth Session to Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: goatbot-auth
+          path: bot/session/
+          retention-days: 5
+
+      - name: Push Updated Session to Repo
+        if: always()
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@users.noreply.github.com"
+          git pull origin $(git rev-parse --abbrev-ref HEAD)
+          git add bot/session/
+          git commit -m "Update GoatBot session (auto-sync)" || echo "No changes to commit"
+          git push || echo "No push needed"
+
+      - name: Enable Debug Shell (tmate)
+        if: failure()
+        uses: mxschmitt/action-tmate@v3
+        
